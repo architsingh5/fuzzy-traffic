@@ -13,6 +13,11 @@ queue_length.automf(3, names=level)
 waiting_time.automf(3, names=level)
 greenSignalTime.automf(3, names=level)
 
+queue_length.view()
+waiting_time.view()
+greenSignalTime.view()
+
+
 # queue_length['low'] = fuzz.trimf(queue_length.universe, [0, 0, 5])
 # queue_length['medium'] = fuzz.trimf(queue_length.universe, [0, 5, 10])
 # queue_length['high'] = fuzz.trimf(queue_length.universe, [5, 10, 20])

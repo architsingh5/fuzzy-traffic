@@ -115,7 +115,7 @@ sim.create_gen({
     [1, {'path': [3, *road(12+7*n), 6]}]
 ]})
 
-sim.create_signal([[0, 2], [1, 3]])
+sim.create_signal([[0], [1, 2], [3, 4]])
 
 
 # Start simulation

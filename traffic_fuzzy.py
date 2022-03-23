@@ -29,7 +29,9 @@ rule9 = ctrl.Rule(queue_length['high'] & waiting_time['high'], greenSignalTime['
 
 GST_control = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9])
 
+
 GST_control_sim = ctrl.ControlSystemSimulation(GST_control)
+
 
 id = 0
 number_of_vehicles_crossed_in_static=0
@@ -336,4 +338,4 @@ if __name__ == '__main__':
     plt.title('Waiting Time vs Vehicle ID')
     plt.legend()
     plt.show()
-    
+    o 
