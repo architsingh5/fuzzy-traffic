@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- generated on 2022-03-24 16:13:36 by Eclipse SUMO netedit Version 1.12.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="junction.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="junction.net.xml"/>
+    </output>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="true"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+</configuration>
+-->
+
 <net version="1.9" junctionCornerDetail="5" lefthand="true" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
     <location netOffset="0.00,0.00" convBoundary="-100.00,100.00,100.00,300.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
@@ -76,13 +112,14 @@
     </edge>
 
     <tlLogic id="J2" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGggrrrrrrrrrrrr"/>
-        <phase duration="3"  state="yyyyrrrrrrrrrrrr"/>
-        <phase duration="42" state="rrrrGGGGrrrrrrrr"/>
-        <phase duration="3"  state="rrrryyyyrrrrrrrr"/>
-        <phase duration="42" state="rrrrrrrrGGggrrrr"/>
-        <phase duration="3"  state="rrrrrrrryyyyrrrr"/>
-        <phase duration="42" state="rrrrrrrrrrrrGGGG"/>
+        <phase duration="42" state="gGGGgrrrgrrgrrr"/>
+        <phase duration="3"  state="gyyygrrrgrrgrrr"/>
+        <phase duration="42" state="grrrgGGGgrrgrrr"/>
+        <phase duration="3"  state="grrrgyyygrrgrrr"/>
+        <phase duration="42" state="grrrgrrrgGGgrrr"/>
+        <phase duration="3"  state="grrrgrrrgyygrrr"/>
+        <phase duration="42" state="grrrgrrrgrrgGGG"/>
+        <phase duration="3"  state="grrrgrrrgrrgyyy"/>
     </tlLogic>
 
     <junction id="J1" type="dead_end" x="-100.00" y="200.00" incLanes="-E0_0" intLanes="" shape="-100.00,200.00 -100.00,196.80 -100.00,200.00"/>
