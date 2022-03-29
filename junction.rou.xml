@@ -1,7 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd" -->
+<routes>
 
-<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <trip id="0" depart="0.00" from="E0" to="-E0"/>
+    <vType accel="0.8" decel="4.5" length="5.0" minGap="2.5" maxSpeed="50.0" sigma="0.5" vClass="private" id="private_car" />
+
+    <!-- <route id="route01" edges="E0 E3"/> -->
+    <route id="route02" edges="E0 -E2"/>
+    <route id="route03" edges="E0 E1"/>
+    <route id="route04" edges="-E3 E1"/>
+    <route id="route05" edges="-E3 -E0"/>
+    <route id="route06" edges="-E3 -E2"/>
+    <route id="route07" edges="-E1 E3"/>
+    <route id="route08" edges="-E1 -E0"/>
+    <route id="route09" edges="-E1 -E2"/>
+    <route id="route10" edges="E2 E1"/>
+    <route id="route11" edges="E2 -E0"/>
+    <route id="route12" edges="E2 E3"/>
+
+    <flow id="car-route1" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route01" edges="E0 E3"/>
+    </flow>
+    <flow id="car-route2" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route02" edges="E0 -E2"/>
+    </flow>
+    <flow id="car-route3" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route03" edges="E0 E1"/>
+    </flow>
+    <flow id="car-route4" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route04" edges="-E3 E1"/>
+    </flow>
+    <flow id="car-route5" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route05" edges="-E3 -E0"/>
+    </flow>
+    <flow id="car-route6" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route06" edges="-E3 -E2"/>
+    </flow>
+    <flow id="car-route7" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route07" edges="-E1 E3"/>
+    </flow>
+    <flow id="car-route8" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route08" edges="-E1 -E0"/>
+    </flow>
+    <flow id="car-route9" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route09" edges="-E1 -E2"/>
+    </flow>
+    <flow id="car-route10" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route10" edges="E2 E1"/>
+    </flow>
+    <flow id="car-route11" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route11" edges="E2 -E0"/>
+    </flow>
+    <flow id="car-route12" number="400" begin="0" probability="0.03" type="private_car">
+        <route id="route12" edges="E2 E3"/>
+    </flow>
+
+</routes>
+    <!-- <route id="route02" edges="F2 G2 D2 E2"/>
+    <route id="route03" edges="E1 D1 H2 I2"/>
+    <route id="route04" edges="I1 H1 B1 A1"/>
+
+    <route id="route05" edges="F2 G2 H2 I2"/>
+    <route id="route06" edges="E1 D1 B1 A1"/>
+    <route id="route07" edges="A2 B2 D2 E2"/>
+    <route id="route08" edges="I1 H1 G1 F1"/>
+
+    <route id="route09" edges="A2 B2 H2 I2"/>
+    <route id="route10" edges="F2 G2 B1 A1"/>
+    <route id="route11" edges="E1 D1 G1 F1"/>
+    <route id="route12" edges="I1 H1 D2 E2"/> -->
+    
+    <!--<trip id="0" depart="0.00" from="E0" to="-E0"/>
     <trip id="1" depart="1.00" from="-E3" to="-E0"/>
     <trip id="2" depart="2.00" from="E0" to="E1"/>
     <trip id="3" depart="3.00" from="E2" to="-E0"/>
@@ -3375,5 +3443,4 @@
     <trip id="3596" depart="3596.00" from="-E3" to="-E2"/>
     <trip id="3597" depart="3597.00" from="-E1" to="-E0"/>
     <trip id="3598" depart="3598.00" from="E0" to="-E2"/>
-    <trip id="3599" depart="3599.00" from="-E3" to="E1"/>
-</routes>
+    <trip id="3599" depart="3599.00" from="-E3" to="E1"/> -->

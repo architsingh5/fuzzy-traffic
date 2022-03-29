@@ -25,4 +25,8 @@
         <no-step-log value="true"/>
     </report>
 
+    <viewsettings>
+        <delay value="100"/>
+    </viewsettings>
+
 </configuration>
