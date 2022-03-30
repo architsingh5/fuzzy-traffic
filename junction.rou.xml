@@ -4,7 +4,7 @@
 
     <vType accel="0.8" decel="4.5" length="5.0" minGap="2.5" maxSpeed="50.0" sigma="0.5" vClass="private" id="private_car" />
 
-    <!-- <route id="route01" edges="E0 E3"/> -->
+    <route id="route01" edges="E0 E3"/>
     <route id="route02" edges="E0 -E2"/>
     <route id="route03" edges="E0 E1"/>
     <route id="route04" edges="-E3 E1"/>

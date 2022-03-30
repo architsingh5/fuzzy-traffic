@@ -13,34 +13,39 @@ else:
 sumo_binary = "sumo-gui"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
-traci.start(sumo_cmd)
+# routes = ["route01","route02","route03","route04","route05","route06","route07","route08","route09","route10","route11","route12"]
+# lanes = ["E0", "E1", "E2", "E3"]
+# trafficLightID = traci.trafficlight.getIDList()[0]
+# traci.route.add("route01", ["E0", "E3"])
 
-# west_east_lanes = ["E0_0", "-E1_0"]
-# north_south_lanes = ["E2_0", "-E3_0"]
+def static_tls():
+    traci.start(sumo_cmd)
+    step = 0
+    total_vehicle_waiting_time = 0  
+    total_no_of_vehicles_crossed = 0
 
-lanes = ["E0", "E1", "E2", "E3"]
+    while step < 1000:
+        # print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
+        # print(traci.trafficlight.getPhaseDuration(trafficLightID))
+        # vechile_id = "vehicle_" + str(step)
+        # traci.vehicle.add(vechile_id, random.choice(routes))
+        traci.simulationStep()
+        step += 1
 
-trafficLightID = traci.trafficlight.getIDList()[0]
+    traci.close()
 
-step = 0
-total_vehicle_waiting_time = 0
-total_no_of_vehicles_crossed = 0
 
-traci.route.add("route01", ["E0", "E3"])
+def dynamic_tls():
+    pass
 
-routes = ["route01","route02","route03","route04","route05","route06","route07","route08","route09","route10","route11","route12"]
 
-while step < 1000:
-    # print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
-    # print(traci.trafficlight.getPhaseDuration(trafficLightID))
-    vechile_id = "vehicle_" + str(step)
-    # traci.vehicle.add(vechile_id, random.choice(routes))
-    traci.simulationStep()
-    step += 1
+if __name__ == "__main__":
+    static_tls()
+    # dynamic_tls()
 
-# traci.simulationStep()
-    
-traci.close()
+
+
+
 
 
 # def current_moving_lane(trafficLightID):
