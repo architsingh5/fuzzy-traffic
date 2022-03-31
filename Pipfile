@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 traci = "*"
+scikit-fuzzy = "*"
+numpy = "*"
+matplotlib = "*"
 
 [dev-packages]
 
