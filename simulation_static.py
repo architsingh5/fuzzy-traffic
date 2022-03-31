@@ -20,7 +20,7 @@ sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 # route.add("route01", ["E0", "E3"])
 
 
-edges = ["E2","-E1","-E3","E0"]
+edges = ["E2", "-E1", "-E3", "E0"]
 
 # def GreenSignaltime(no_of_vehicles_in_lane,no_of_vehicles_in_other_queue,maximum_waiting_time):
 #     return getGST()
@@ -34,25 +34,24 @@ def static_tls():
     lane_id = 0
 
     while step < 1000:
-        no_of_vehicles = traci.lane.getLastStepVehicleIDs(edges[lane_id])
+        no_of_vehicles = len(traci.lane.getLastStepVehicleIDs(edges[lane_id]))
         no_of_vehicles_other = 0
 
         for l in range(1, 3):
-            no_of_vehicles_other += traci.lane.getLastStepVehicleIDs(edges[(lane_id + l) % 4])
+            no_of_vehicles_other += len(traci.lane.getLastStepVehicleIDs(edges[(lane_id + l) % 4]))
 
-        
         vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edges[lane_id])
         first_vehicle = vehicles_on_lane[0]
         first_vehicle_waiting_time = traci.vehicle.getWaitingTime(first_vehicle)
 
-        gst = getGST(no_of_vehicles,no_of_vehicles_other,first_vehicle_waiting_time)
+        gst = getGST(no_of_vehicles, no_of_vehicles_other, first_vehicle_waiting_time)
 
         # traci.trafficlight.setPhase("J2",0)
-        traci.trafficlight.setPhaseDuration("J2",gst)
+        traci.trafficlight.setPhaseDuration("J2", gst)
 
-        current_lane_steps=0
-        while(current_lane_steps<gst):
-            step+=1
+        current_lane_steps = 0
+        while(current_lane_steps < gst):
+            step += 1
             current_lane_steps+=1
             traci.simulationStep()
 
