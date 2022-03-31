@@ -2,6 +2,7 @@ import os
 import sys
 import traci
 import random
+from fuzzyRules import fuzzy_controller_function as getGST
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -18,54 +19,51 @@ sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 # traci.
 # route.add("route01", ["E0", "E3"])
 
-lane=0
 
-def GreenSignaltime(no_of_vehicles_in_lane,no_of_vehicles_in_other_queue,maximum_waiting_time):
-    return 30
+edges = ["E2","-E1","-E3","E0"]
+
+# def GreenSignaltime(no_of_vehicles_in_lane,no_of_vehicles_in_other_queue,maximum_waiting_time):
+#     return getGST()
 
 def static_tls():
     traci.start(sumo_cmd)
     step = 0
     total_vehicle_waiting_time = 0  
     total_no_of_vehicles_crossed = 0
+        
+    lane_id = 0
 
     while step < 1000:
+        no_of_vehicles = traci.lane.getLastStepVehicleIDs(edges[lane_id])
+        no_of_vehicles_other = 0
+
+        for l in range(1, 3):
+            no_of_vehicles_other += traci.lane.getLastStepVehicleIDs(edges[(lane_id + l) % 4])
+
         
-        if(lane==0):
-            lane_id = "E2"
-            lane = 1
-            no_of_vehicles = traci.lane.getLastStepVehicleIDs(lane_id)
-            no_of_vehicles_other = traci.lane.getLastStepVehicleIDs("-E1")
-            no_of_vehicles_other+= traci.lane.getLastStepVehicleIDs("-E3")
-            no_of_vehicles_other+= traci.lane.getLastStepVehicleIDs("E0")
+        vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edges[lane_id])
+        first_vehicle = vehicles_on_lane[0]
+        first_vehicle_waiting_time = traci.vehicle.getWaitingTime(first_vehicle)
 
-            vehicles_on_lane = traci.edge.getLastStepVehicleIDs("E2")
-            first_vehicle = vehicles_on_lane[0]
-            first_vehicle_waiting_time = traci.vehicle.getWaitingTime(first_vehicle)
+        gst = getGST(no_of_vehicles,no_of_vehicles_other,first_vehicle_waiting_time)
 
-            gst = GreenSignaltime(no_of_vehicles,no_of_vehicles_other,first_vehicle_waiting_time)
+        # traci.trafficlight.setPhase("J2",0)
+        traci.trafficlight.setPhaseDuration("J2",gst)
 
-            traci.trafficlight.setPhase("J2",)
+        current_lane_steps=0
+        while(current_lane_steps<gst):
+            step+=1
+            current_lane_steps+=1
+            traci.simulationStep()
 
-        # elif(lane==1):
-        #     lane_id = "-E1"
-        #     lane = 2
-        #     no_of_vehicles = traci.lane.getLastStepVehicleIDs(lane_id)
-        #     no_of_vehicles_other = traci.lane.getLastStepVehicleIDs("E2")
-        #     no_of_vehicles_other+= traci.lane.getLastStepVehicleIDs("-E3")
-        #     no_of_vehicles_other+= traci.lane.getLastStepVehicleIDs("E0")
-
-        #     vehicles_on_lane = traci.edge.getLastStepVehicleIDs("-E1")
-        #     first_vehicle = vehicles_on_lane[0]
-        #     first_vehicle_waiting_time = traci.vehicle.getWaitingTime(first_vehicle)
-
-        #     gst = GreenSignaltime(no_of_vehicles,no_of_vehicles_other,first_vehicle_waiting_time)
+        lane_id += 1
+        lane_id = lane_id % 4
 
 
             
     
-        traci.simulationStep()
-        step += 1
+        # traci.simulationStep()
+        # step += 1
 
     traci.close()
 
