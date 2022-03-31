@@ -11,7 +11,7 @@ class TrafficSignal:
         self.init_properties()
 
     def set_default_config(self):
-        self.cycle = [(False, True), (True, False)]
+        self.cycle = [(False, True), (True, False), (False, True), (True, False)]
         self.slow_distance = 50
         self.slow_factor = 0.4
         self.stop_distance = 15
