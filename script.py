@@ -1,6 +1,5 @@
 import os
 import sys
-from xml.etree.ElementTree import tostring
 import traci
 import random
 
@@ -25,6 +24,7 @@ def static_tls():
     total_no_of_vehicles_crossed = 0
 
     while step < 1000:
+
         # print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
         # print(traci.trafficlight.getPhaseDuration(trafficLightID))
         # vechile_id = "vehicle_" + str(step)
@@ -34,10 +34,8 @@ def static_tls():
 
     traci.close()
 
-
 def dynamic_tls():
     pass
-
 
 if __name__ == "__main__":
     static_tls()
