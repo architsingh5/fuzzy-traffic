@@ -3,17 +3,20 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
-queue_length_curr = ctrl.Antecedent(np.arange(0,31,1), 'queue_length')
-queue_length_other = ctrl.Antecedent(np.arange(0,93,1), 'queue_length')
-max_waiting_time = ctrl.Antecedent(np.arange(0,31,1), 'waiting_time')
+queue_length_curr = ctrl.Antecedent(np.arange(0, 31, 1), "queue_length_curr")
+queue_length_other = ctrl.Antecedent(np.arange(0, 91, 1), "queue_length_other")
+max_waiting_time = ctrl.Antecedent(np.arange(0, 91, 1), "max_waiting_time")
 
-green_signal_time = ctrl.Consequent(np.arange(0,31,1), 'greenSignalTime')
+green_signal_time = ctrl.Consequent(np.arange(0, 31, 1), "green_signal_time")
 
-level = ['low', 'medium', 'high']
+level = ["low", "med", "high"]
 
 queue_length_curr.automf(3, names=level)
+queue_length_other.automf(3, names=level)
 max_waiting_time.automf(3, names=level)
+
 green_signal_time.automf(3, names=level)
+
 
 rule1 = ctrl.Rule(
     queue_length_curr["low"] & queue_length_other["low"] & max_waiting_time["low"],
@@ -159,13 +162,13 @@ GST_control = ctrl.ControlSystem(
 
 gst_control_sim = ctrl.ControlSystemSimulation(GST_control)
 
+
 def fuzzy_controller_function(queue_length_curr, queue_length_other, max_waiting_time):
-    
-    gst_control_sim.input['queue_length_curr'] = queue_length_curr
-    gst_control_sim.input['queue_length_other'] = queue_length_other
-    gst_control_sim.input['max_waiting_time'] = max_waiting_time
+
+    gst_control_sim.input["queue_length_curr"] = queue_length_curr
+    gst_control_sim.input["queue_length_other"] = queue_length_other
+    gst_control_sim.input["max_waiting_time"] = max_waiting_time
 
     gst_control_sim.compute()
-    output = gst_control_sim.output['traffic_light_signal']
-    print('output ' + str(output))
-    return output
+    output = gst_control_sim.output["green_signal_time"]
+    return round(output)
