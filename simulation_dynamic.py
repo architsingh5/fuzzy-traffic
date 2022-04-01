@@ -13,7 +13,6 @@ else:
 sumo_binary = "sumo-gui"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
-
 edges = ["E2", "-E1", "-E3", "E0"]
 
 
@@ -45,7 +44,6 @@ def set_lane_time(edge, step):
         current_lane_steps += 1
         traci.simulationStep()
 
-    # print(traci.trafficlight.getRedYellowGreenState("J2"))
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
     traci.trafficlight.setPhaseDuration("J2", 4)
     j = 0
