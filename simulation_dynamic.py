@@ -27,14 +27,20 @@ def set_lane_time(edge,step):
     vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edge)
     maximum_waiting_time = 0
 
+
+
     for vehicle in vehicles_on_lane:
-        maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getAccumulatedWaitingTime(vehicle))
+        maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle))
+
+    print("Maximum waiting time: ", maximum_waiting_time)
+    print("No of vehicles: ", no_of_vehicles)
+    print("No of vehicles on other lanes: ", no_of_vehicles_other)
 
     # if(len(vehicles_on_lane)>0):
     #     first_vehicle_waiting_time = traci.vehicle.getWaitingTime(vehicles_on_lane[0])
 
     gst = getGST(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time)
-    print(gst)
+    print("Green Signal Time for edge: ", edge, " is: ", gst)
 
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
@@ -47,9 +53,9 @@ def set_lane_time(edge,step):
 
     print(traci.trafficlight.getRedYellowGreenState("J2"))
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
-    traci.trafficlight.setPhaseDuration("J2", 2)
+    traci.trafficlight.setPhaseDuration("J2", 4)
     j = 0
-    while(j<2):
+    while(j<4):
         step += 1
         j+=1
         traci.simulationStep()
