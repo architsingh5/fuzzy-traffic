@@ -40,14 +40,15 @@ def set_lane_time(edge,step):
     traci.trafficlight.setPhaseDuration("J2", gst)
 
     current_lane_steps = 0
-    while(current_lane_steps < gst+1):
+    while(current_lane_steps < gst + 1):
         step += 1
         current_lane_steps+=1
         traci.simulationStep()
 
     print(traci.trafficlight.getRedYellowGreenState("J2"))
-    traci.trafficlight.setPhaseDuration("J2",2)
-    j=0
+    traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
+    traci.trafficlight.setPhaseDuration("J2", 2)
+    j = 0
     while(j<2):
         step += 1
         j+=1
