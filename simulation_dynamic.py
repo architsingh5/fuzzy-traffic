@@ -17,16 +17,16 @@ edges = ["E2", "-E1", "-E3", "E0"]
 
 
 def set_lane_time(edge, step):
-    no_of_vehicles = len(traci.edge.getLastStepVehicleIDs(edge))
+    no_of_vehicles = traci.edge.getLastStepVehicleNumber(edge)
     no_of_vehicles_other = 0
 
     for i in range(0, len(edges)):
         if edges[i] != edge:
-            no_of_vehicles_other += len(traci.edge.getLastStepVehicleIDs(edges[i]))
+            no_of_vehicles_other += traci.edge.getLastStepVehicleNumber(edges[i])
 
     vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edge)
     maximum_waiting_time = 0
-
+        
     for vehicle in vehicles_on_lane:
         maximum_waiting_time = max(
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)

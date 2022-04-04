@@ -25,7 +25,8 @@ def set_lane_time(edge, step):
 
     vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edge)
     maximum_waiting_time = 0
-
+    # if no_of_vehicles > 0 :
+        # maximum_waiting_time = max(traci.vehicle.getWaitingTime(vehicles_on_lane[no_of_vehicles-1]) , traci.vehicle.getWaitingTime(vehicles_on_lane[0]) )
     for vehicle in vehicles_on_lane:
         maximum_waiting_time = max(
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)

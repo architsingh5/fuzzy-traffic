@@ -4,6 +4,7 @@
     <input>
         <net-file value="junction.net.xml"/>
         <route-files value="junction.rou.xml"/>
+        <gui-settings-file value="junction.gui-settings.xml"/>
     </input>
 
     <processing>
@@ -20,8 +21,5 @@
         <duration-log.statistics value="true"/>
         <no-step-log value="true"/>
     </report>
-    <viewsettings>
-        <delay value="100.00"/>
-    </viewsettings>   
 
 </configuration>
