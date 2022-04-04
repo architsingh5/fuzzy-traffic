@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- generated on 2022-03-19 14:48:32 by Eclipse SUMO sumo Version 1.12.0
--->
-
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -24,9 +20,8 @@
         <duration-log.statistics value="true"/>
         <no-step-log value="true"/>
     </report>
-
     <viewsettings>
-        <delay value="100"/>
-    </viewsettings>
+        <delay value="100.00"/>
+    </viewsettings>   
 
 </configuration>
