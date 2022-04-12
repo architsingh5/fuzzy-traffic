@@ -9,197 +9,116 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
+sumo_binary = "sumo"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
+return_edges = ["-E2", "E1", "E3", "-E0"]
+
+total_no_of_vehicles_crossed = 0
+total_waiting_time = 0
+
+def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
+    if(edge[0] == "-"):
+        edge = edge[1:]
+    else:
+        edge = "-" + edge
+
+    for return_edge in return_edges:
+        if return_edge == edge:
+            continue
+        vehicles_on_lane = traci.edge.getLastStepVehicleIDs(return_edge)
+        for vehicle in vehicles_on_lane:
+            if vehicle not in vehicles_crossed and vehicle in vehicles_on_current_lane:
+                vehicles_crossed.add(vehicle)
 
 
 def set_lane_time(edge, step):
+
+    global total_no_of_vehicles_crossed, total_waiting_time
+
     no_of_vehicles = traci.edge.getLastStepVehicleNumber(edge)
     no_of_vehicles_other = 0
 
     for i in range(0, len(edges)):
         if edges[i] != edge:
-            no_of_vehicles_other += (traci.edge.getLastStepVehicleNumber(edges[i])) 
+            no_of_vehicles_other += traci.edge.getLastStepVehicleNumber(edges[i])
 
     vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edge)
     maximum_waiting_time = 0
-    # if no_of_vehicles > 0 :
-        # maximum_waiting_time = max(traci.vehicle.getWaitingTime(vehicles_on_lane[no_of_vehicles-1]) , traci.vehicle.getWaitingTime(vehicles_on_lane[0]) )
+    
+    vehicle_with_waiting_time = []
+    # print("Lane:", edge, "No of vehicles:", len(vehicles_on_lane), "No of vehicles:", no_of_vehicles)
+
     for vehicle in vehicles_on_lane:
+        # print("Waiting time of vehicle " + vehicle + " is " + str(traci.vehicle.getWaitingTime(vehicle)))
+        vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)
         )
 
     gst = 30
-    print(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time, gst)
+    # print(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time, gst,sep="\t")
 
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
 
     current_lane_steps = 0
+    vehicles_crossed = set()
     while current_lane_steps < gst + 1:
         step += 1
         current_lane_steps += 1
+        calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
         traci.simulationStep()
+
+    # print("No of vehicles crossed:", len(vehicles_crossed)+1)
+    total_no_of_vehicles_crossed = total_no_of_vehicles_crossed + len(vehicles_crossed) + 1
+
+    for vehicle in vehicles_crossed:
+        for that_vehicle in vehicle_with_waiting_time:
+            if vehicle == that_vehicle[0]:
+                total_waiting_time = total_waiting_time + that_vehicle[1]
+
 
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
     traci.trafficlight.setPhaseDuration("J2", 4)
     j = 0
-    while j < 4:
+    while j < 1:
         step += 1
         j += 1
-        traci.simulationStep()
+    #     traci.simulationStep()
 
     return step
 
 
-def dynamic_tls():
+def static_tls():
     traci.start(sumo_cmd)
     step = 0
-    total_vehicle_waiting_time = 0
-    total_no_of_vehicles_crossed = 0
     lane = 0
 
     while step < 1000:
 
         if lane == 0:
-            lane = 1
             step = set_lane_time("E2", step)
+            lane = 1
 
         elif lane == 1:
-            lane = 2
             step = set_lane_time("-E1", step)
+            lane = 2
 
         elif lane == 2:
-            lane = 3
             step = set_lane_time("-E3", step)
+            lane = 3
 
         elif lane == 3:
-            lane = 0
             step = set_lane_time("E0", step)
-
+            lane = 0
+    
     traci.close()
 
 
-# def dynamic_tls():
-#     pass
+    print("Total vehicles crossed:", total_no_of_vehicles_crossed)
+    print("Average waiting time:", round(total_waiting_time/total_no_of_vehicles_crossed,2))
 
 if __name__ == "__main__":
-    dynamic_tls()
-    # dynamic_tls()
-    # traci.simulationStep()
-    # step += 1
-
-# print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
-# print(traci.trafficlight.getPhaseDuration(trafficLightID))
-# vechile_id = "vehicle_" + str(step)
-# traci.vehicle.add(vechile_id, random.choice(routes))
-
-# def get_vehicles_in_lane(array_of_lane_id):
-#     vehicles = []
-#     for laneIDs in array_of_lane_id:
-#         vehicles = vehicles + list(traci.lane.getLastStepVehicleIDs(laneIDs))
-#     return vehicles
-
-
-# def vehicle_waiting_time_in_lane(vehicle_list):
-#     waiting_times = []
-#     for vehicle in vehicle_list:
-#         waiting_times.append(traci.vehicle.getAccumulatedWaitingTime(vehicle))
-#     if len(waiting_times) == 0:
-#         return 0
-#     else:
-#         return waiting_times
-
-
-# routes = ["route01","route02","route03","route04","route05","route06","route07","route08","route09","route10","route11","route12"]
-# lanes = ["E0", "E1", "E2", "E3"]
-# trafficLightID = traci.trafficlight.getIDList()[0]
-# traci.
-# route.add("route01", ["E0", "E3"])
-
-
-# def current_moving_lane(trafficLightID):
-#     if traci.trafficlight.getRedYellowGreenState(trafficLightID).startswith("rrrr"):
-#         return "WE"
-#     else:
-#         return "NS"
-
-
-# def get_lane_lists(traffic_lanes, trafficLightID):
-#     """
-#     :param traffic_lanes_in_x_axis:  list
-#         lanes controlled by traffic light in the x-axis
-#     :param traffic_lanes_in_y_axis: list
-#         lanes controlled by traffic light in the y-axis
-#     :return: green_light_lanes: array
-#         list of lanes currently moving.
-#     ::return: red_light_lanes: array
-#         list of lanes blocked by traffic
-#     """
-
-# print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
-# print(traci.trafficlight.getPhaseDuration(trafficLightID))
-
-# if current_moving_lane(trafficLightID) == "WE":
-#     return traffic_lanes_in_x_axis, traffic_lanes_in_y_axis
-# else:
-#     return traffic_lanes_in_y_axis, traffic_lanes_in_x_axis
-
-
-# def get_vehicles_in_lanes(lane_ids):
-#     """
-
-#     :param array_of_lane_id: list
-#         a list containing the IDs of the lanes to get vehicles from
-#     :return: vehicles: list
-#         a list of all vehicles in the lanes
-
-#     """
-#     vehicles = []
-#     for lane_id in lane_ids:
-#         vehicles = vehicles + list(traci.lane.getLastStepVehicleIDs(lane_id))
-#     return vehicles
-
-
-# def vehicle_waiting_time_in_lane(vehicle_list):
-#     waiting_times = []
-#     for vehicle in vehicle_list:
-#         waiting_times.append(traci.vehicle.getAccumulatedWaitingTime(vehicle))
-#     if len(waiting_times) == 0:
-#         return 0
-#     else:
-#         return waiting_times
-
-# while step < 1000:
-# print(traci.trafficlight.getRedYellowGreenState(trafficLightID))
-# print(traci.trafficlight.getPhaseDuration(trafficLightID))
-
-# lanes_currently_moving, lanes_stopped_by_light = get_lane_lists(
-#     lanes, trafficLightID
-# )
-
-# get_lane_lists(lanes, trafficLightID)
-
-# vehicles_in_red_lanes = get_vehicles_in_lanes(lanes_stopped_by_light)
-# vehicles_in_green_lanes = get_vehicles_in_lanes(lanes_currently_moving)
-
-# no_vehicles_in_red_lanes = len(vehicles_in_red_lanes)
-# no_vehicles_in_green_lanes = len(vehicles_in_green_lanes)
-
-# vehicles_waiting_time = vehicle_waiting_time_in_lane(vehicles_in_red_lanes)
-
-# if vehicles_waiting_time != 0:
-#     vehicles_waiting_time.sort()
-#     max_waiting_time_in_red_lanes = vehicles_waiting_time[-1]
-#     sum_wt_time = sum(vehicles_waiting_time)
-#     total_vehicle_waiting_time += sum_wt_time
-
-# traci.simulationStep()
-# step += 1
-
-# print(total_vehicle_waiting_time)
-
-# traci.close()
+    static_tls()
