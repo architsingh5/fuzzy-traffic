@@ -3,6 +3,7 @@ import sys
 import traci
 import random
 from fuzzyRules import fuzzy_controller_function as getGST
+from simulation_static import static_tls 
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -10,8 +11,8 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
-sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
+sumo_binary = "sumo"
+sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start", "--queue-output", "file.txt"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
 
@@ -87,7 +88,9 @@ def dynamic_tls():
 #     pass
 
 if __name__ == "__main__":
-    dynamic_tls()
+    # for i in range(10):
+        static_tls() 
+        dynamic_tls()
     # dynamic_tls()
     # traci.simulationStep()
     # step += 1

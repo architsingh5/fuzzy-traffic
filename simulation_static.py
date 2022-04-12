@@ -9,8 +9,8 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
-sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
+sumo_binary = "sumo"
+sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start", "--queue-output", " file.txt"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
 
@@ -55,7 +55,7 @@ def set_lane_time(edge, step):
     return step
 
 
-def dynamic_tls():
+def static_tls():
     traci.start(sumo_cmd)
     step = 0
     total_vehicle_waiting_time = 0
@@ -83,12 +83,12 @@ def dynamic_tls():
     traci.close()
 
 
-# def dynamic_tls():
+# def static_tls():
 #     pass
 
 if __name__ == "__main__":
-    dynamic_tls()
-    # dynamic_tls()
+    static_tls()
+    # static_tls()
     # traci.simulationStep()
     # step += 1
 
