@@ -7,7 +7,7 @@ queue_length_curr = ctrl.Antecedent(np.arange(0, 31, 1), "queue_length_curr")
 queue_length_other = ctrl.Antecedent(np.arange(0, 91, 1), "queue_length_other")
 max_waiting_time = ctrl.Antecedent(np.arange(0, 91, 1), "max_waiting_time")
 
-green_signal_time = ctrl.Consequent(np.arange(0, 41, 1), "green_signal_time")
+green_signal_time = ctrl.Consequent(np.arange(0, 35, 1), "green_signal_time")
 
 level = ["low", "med", "high"]
 

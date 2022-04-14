@@ -4,13 +4,14 @@ import traci
 import random
 from fuzzyRules import fuzzy_controller_function as getGST
 
+
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
     sys.path.append(tools)
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo"
+sumo_binary = "sumo-gui"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
@@ -18,6 +19,7 @@ return_edges = ["-E2", "E1", "E3", "-E0"]
 
 total_no_of_vehicles_crossed = 0
 total_waiting_time = 0
+total_fuel_consumption = 0 
 
 def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
     if(edge[0] == "-"):
@@ -36,7 +38,7 @@ def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
 
 def set_lane_time(edge, step):
 
-    global total_no_of_vehicles_crossed, total_waiting_time
+    global total_no_of_vehicles_crossed, total_waiting_time, total_fuel_consumption
 
     no_of_vehicles = traci.edge.getLastStepVehicleNumber(edge)
     no_of_vehicles_other = 0
@@ -53,6 +55,8 @@ def set_lane_time(edge, step):
 
     for vehicle in vehicles_on_lane:
         # print("Waiting time of vehicle " + vehicle + " is " + str(traci.vehicle.getWaitingTime(vehicle)))
+        # print("fuel consumption for vehicle " + vehicle + " is : " + str(traci.vehicle.getFuelConsumption(vehicle)))
+        # print(traci.vehicle.getFuelConsumption(vehicle))
         vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)
@@ -63,13 +67,17 @@ def set_lane_time(edge, step):
 
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
-
+    
     current_lane_steps = 0
     vehicles_crossed = set()
     while current_lane_steps < gst + 1:
         step += 1
         current_lane_steps += 1
         calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
+        for edge in edges:
+            total_fuel_consumption+=traci.edge.getFuelConsumption(edge) 
+        for edge in return_edges:
+            total_fuel_consumption+=traci.edge.getFuelConsumption(edge) 
         traci.simulationStep()
 
     # print("No of vehicles crossed:", len(vehicles_crossed)+1)
@@ -117,7 +125,7 @@ def dynamic_tls():
     
     traci.close()
 
-
+    print("total fuel consumption in complete simulation is  : ", total_fuel_consumption / 1000, " liters")
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
     print("Average waiting time:", round(total_waiting_time/total_no_of_vehicles_crossed,2))
 
