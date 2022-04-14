@@ -22,8 +22,9 @@ total_waiting_time = 0
 total_fuel_consumption = 0 
 total_CO2_emission = 0
 
-def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
-    if(edge[0] == "-"):
+
+def calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_current_lane, edge):
+    if edge[0] == "-":
         edge = edge[1:]
     else:
         edge = "-" + edge
@@ -50,7 +51,7 @@ def set_lane_time(edge, step):
 
     vehicles_on_lane = traci.edge.getLastStepVehicleIDs(edge)
     maximum_waiting_time = 0
-    
+
     vehicle_with_waiting_time = []
     # print("Lane:", edge, "No of vehicles:", len(vehicles_on_lane), "No of vehicles:", no_of_vehicles)
 
@@ -58,17 +59,19 @@ def set_lane_time(edge, step):
         # print("Waiting time of vehicle " + vehicle + " is " + str(traci.vehicle.getWaitingTime(vehicle)))
         # print("fuel consumption for vehicle " + vehicle + " is : " + str(traci.vehicle.getFuelConsumption(vehicle)))
         # print(traci.vehicle.getFuelConsumption(vehicle))
-        vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
+        vehicle_with_waiting_time.append(
+            (vehicle, traci.vehicle.getWaitingTime(vehicle))
+        )
         maximum_waiting_time = max(
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)
         )
 
     gst = getGST(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time)
-    # print(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time, gst,sep="\t")
+    print(maximum_waiting_time, sep="\t")
 
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
-    
+
     current_lane_steps = 0
     vehicles_crossed = set()
     while current_lane_steps < gst + 1:
@@ -84,13 +87,14 @@ def set_lane_time(edge, step):
         traci.simulationStep()
 
     # print("No of vehicles crossed:", len(vehicles_crossed)+1)
-    total_no_of_vehicles_crossed = total_no_of_vehicles_crossed + len(vehicles_crossed) + 1
+    total_no_of_vehicles_crossed = (
+        total_no_of_vehicles_crossed + len(vehicles_crossed) + 1
+    )
 
     for vehicle in vehicles_crossed:
         for that_vehicle in vehicle_with_waiting_time:
             if vehicle == that_vehicle[0]:
                 total_waiting_time = total_waiting_time + that_vehicle[1]
-
 
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
     traci.trafficlight.setPhaseDuration("J2", 4)
@@ -125,7 +129,7 @@ def dynamic_tls():
         elif lane == 3:
             step = set_lane_time("E0", step)
             lane = 0
-    
+
     traci.close()
 
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)

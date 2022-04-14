@@ -17,15 +17,15 @@
     <route id="route11" edges="E2 -E0"/>
     <route id="route12" edges="E2 E3"/>
 
-    <!-- <flow id="car-route1" number="400" begin="0" probability="0.07" type="private_car">
+    <flow id="car-route1" number="400" begin="0" probability="0.03" type="private_car">
         <route edges="E0 E3"/>
     </flow>
-    <flow id="car-route2" number="400" begin="0" probability="0.07" type="private_car">
+    <flow id="car-route2" number="400" begin="0" probability="0.03" type="private_car">
         <route edges="E0 -E2"/>
     </flow>
-    <flow id="car-route3" number="400" begin="0" probability="0.07" type="private_car">
+    <flow id="car-route3" number="400" begin="0" probability="0.03" type="private_car">
         <route edges="E0 E1"/>
-    </flow> -->
+    </flow>
     <flow id="car-route4" number="400" begin="0" probability="0.03" type="private_car">
         <route edges="-E3 E1"/>
     </flow>
