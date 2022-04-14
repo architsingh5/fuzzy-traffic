@@ -3,7 +3,7 @@ import sys
 import traci
 import random
 from fuzzyRules import fuzzy_controller_function as getGST
-
+from simulation_static import static_tls
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -11,7 +11,7 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
+sumo_binary = "sumo"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
@@ -20,6 +20,7 @@ return_edges = ["-E2", "E1", "E3", "-E0"]
 total_no_of_vehicles_crossed = 0
 total_waiting_time = 0
 total_fuel_consumption = 0 
+total_CO2_emission = 0
 
 def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
     if(edge[0] == "-"):
@@ -38,7 +39,7 @@ def calculcate_vehicles_crossed(vehicles_crossed,vehicles_on_current_lane,edge):
 
 def set_lane_time(edge, step):
 
-    global total_no_of_vehicles_crossed, total_waiting_time, total_fuel_consumption
+    global total_no_of_vehicles_crossed, total_waiting_time, total_fuel_consumption, total_CO2_emission
 
     no_of_vehicles = traci.edge.getLastStepVehicleNumber(edge)
     no_of_vehicles_other = 0
@@ -75,8 +76,10 @@ def set_lane_time(edge, step):
         current_lane_steps += 1
         calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
         for edge in edges:
+            total_CO2_emission+=traci.edge.getCO2Emission(edge)
             total_fuel_consumption+=traci.edge.getFuelConsumption(edge) 
         for edge in return_edges:
+            total_CO2_emission+=traci.edge.getCO2Emission(edge)
             total_fuel_consumption+=traci.edge.getFuelConsumption(edge) 
         traci.simulationStep()
 
@@ -125,10 +128,14 @@ def dynamic_tls():
     
     traci.close()
 
-    print("total fuel consumption in complete simulation is  : ", total_fuel_consumption / 1000, " liters")
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
     print("Average waiting time:", round(total_waiting_time/total_no_of_vehicles_crossed,2))
+    print("total CO2 emission : ", round(total_CO2_emission/1000 , 2), " grams ")
+    print("total fuel consumption : ", round(total_fuel_consumption / 1000 , 2), " liters")
 
 
 if __name__ == "__main__":
+    print("===STATIC===")
+    static_tls()
+    print("===DYNAMIC===")
     dynamic_tls()
