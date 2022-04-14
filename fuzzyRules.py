@@ -15,8 +15,13 @@ queue_length_curr.automf(3, names=level)
 queue_length_other.automf(3, names=level)
 max_waiting_time.automf(3, names=level)
 
+# queue_length_curr.view()
+# queue_length_other.view()
+# max_waiting_time.view()
+
 green_signal_time.automf(3, names=level)
 
+# green_signal_time.view()
 
 rule1 = ctrl.Rule(
     queue_length_curr["low"] & queue_length_other["low"] & max_waiting_time["low"],
@@ -170,5 +175,9 @@ def fuzzy_controller_function(queue_length_curr, queue_length_other, max_waiting
     gst_control_sim.input["max_waiting_time"] = max_waiting_time
 
     gst_control_sim.compute()
+
     output = gst_control_sim.output["green_signal_time"]
+    # green_signal_time.view(sim=gst_control_sim)
+    # plt.show()
     return round(output)
+
