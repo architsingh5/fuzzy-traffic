@@ -65,7 +65,7 @@ def set_lane_time(edge, step):
             maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle)
         )
 
-    gst = 30
+    gst = 40
     # print(maximum_waiting_time, sep="\t")
 
     # traci.trafficlight.setPhase("J2",0)
@@ -131,15 +131,10 @@ def static_tls():
 
     traci.close()
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
-    print(
-        "Average waiting time:",
-        round(total_waiting_time / total_no_of_vehicles_crossed, 2),
-    )
+    print("Average waiting time:",
+        round(total_waiting_time / total_no_of_vehicles_crossed, 2),)
     print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
-    print(
-        "total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters"
-    )
-
+    print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
 
 if __name__ == "__main__":
     static_tls()
