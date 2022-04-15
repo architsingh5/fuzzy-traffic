@@ -22,7 +22,6 @@ total_waiting_time = 0
 total_fuel_consumption = 0
 total_CO2_emission = 0
 
-
 def calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_current_lane, edge):
     if edge[0] == "-":
         edge = edge[1:]
@@ -68,7 +67,8 @@ def set_lane_time(edge, step):
 
     gst = getGST(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time)
     # print(maximum_waiting_time, sep="\t")
-
+    if(no_of_vehicles==0):
+        gst=3
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
 
@@ -133,15 +133,9 @@ def dynamic_tls():
     traci.close()
 
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
-    print(
-        "Average waiting time:",
-        round(total_waiting_time / total_no_of_vehicles_crossed, 2),
-    )
+    print("Average waiting time:",round(total_waiting_time / total_no_of_vehicles_crossed, 2),)
     print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
-    print(
-        "total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters"
-    )
-
+    print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
 
 if __name__ == "__main__":
     dynamic_tls()
