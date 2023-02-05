@@ -10,7 +10,7 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo"
+sumo_binary = "sumo-gui"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
 
 edges = ["E2", "-E1", "-E3", "E0"]

@@ -2,13 +2,21 @@
 
 <additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
     <tlLogic id="J2" type="static" programID="0" offset="0">
-        <phase duration="30" state="gGGGgrrrgrrgrrr"/>
+        <!-- <phase duration="30" state="gGGGgrrrgrrgrrr"/>
         <phase duration="3"  state="gyyygrrrgrrgrrr"/>
         <phase duration="30" state="grrrgGGGgrrgrrr"/>
         <phase duration="3"  state="grrrgyyygrrgrrr"/>
         <phase duration="30" state="grrrgrrrgGGgrrr"/>
         <phase duration="3"  state="grrrgrrrgyygrrr"/>
         <phase duration="30" state="grrrgrrrgrrgGGG"/>
-        <phase duration="3" state="grrrgrrrgrrgyyy"/>
+        <phase duration="3" state="grrrgrrrgrrgyyy"/> -->
+        <phase duration="30" state="GggggGGrrrrGGrrrrGGrrrrG"/>
+        <phase duration="3"  state="GyyyyGGrrrrGGrrrrGGrrrrG"/>
+        <phase duration="30" state="GrrrrGGggggGGrrrrGGrrrrG"/>
+        <phase duration="3"  state="GrrrrGGyyyyGGrrrrGGrrrrG"/>
+        <phase duration="30" state="GrrrrGGrrrrGGggggGGrrrrG"/>
+        <phase duration="3"  state="GrrrrGGrrrrGGyyyyGGrrrrG"/>
+        <phase duration="30" state="GrrrrGGrrrrGGrrrrGGggggG"/>
+        <phase duration="3"  state="GrrrrGGrrrrGGrrrrGGyyyyG"/>
     </tlLogic>
 </additional>
