@@ -10,8 +10,9 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
-sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start"]
+sumo_binary = "sumo"
+sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start", "--duration-log.disable", "true", "--no-step-log", "true",
+"--no-warnings", "true"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
 return_edges = ["-E2", "E1", "E3", "-E0"]
@@ -68,6 +69,7 @@ def set_lane_time(edge, step):
     gst = 40
     # print(maximum_waiting_time, sep="\t")
 
+
     # traci.trafficlight.setPhase("J2",0)
     traci.trafficlight.setPhaseDuration("J2", gst)
 
@@ -77,26 +79,29 @@ def set_lane_time(edge, step):
         step += 1
         current_lane_steps += 1
         calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
-        for edge in edges:
-            total_CO2_emission += traci.edge.getCO2Emission(edge)
-            total_fuel_consumption += traci.edge.getFuelConsumption(edge)
-        for edge in return_edges:
-            total_CO2_emission += traci.edge.getCO2Emission(edge)
-            total_fuel_consumption += traci.edge.getFuelConsumption(edge)
+        for edge2 in edges:
+            total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
+        for edge2 in return_edges:
+            total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
         traci.simulationStep()
 
     # print("No of vehicles crossed:", len(vehicles_crossed)+1)
-    total_no_of_vehicles_crossed = (
-        total_no_of_vehicles_crossed + len(vehicles_crossed) + 1
-    )
+    total_no_of_vehicles_crossed += len(vehicles_crossed)
 
+    curr_waiting_time = 0
     for vehicle in vehicles_crossed:
         for that_vehicle in vehicle_with_waiting_time:
             if vehicle == that_vehicle[0]:
+                curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
+    if(len(vehicles_crossed) > 0):
+        print("Avg WT: ", curr_waiting_time/len(vehicles_crossed))
 
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
     traci.trafficlight.setPhaseDuration("J2", 4)
+    print(edge, "gst - ", gst, " " , no_of_vehicles, " ", no_of_vehicles_other, " ", maximum_waiting_time, " ", len(vehicles_crossed))
     j = 0
     while j < 1:
         step += 1
@@ -104,6 +109,7 @@ def set_lane_time(edge, step):
     #     traci.simulationStep()
 
     return step
+
 
 
 def static_tls():
