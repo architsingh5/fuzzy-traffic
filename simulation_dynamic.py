@@ -2,7 +2,10 @@ import os
 import sys
 import traci
 from fuzzyRules import fuzzy_controller_function as getGST
-from simulation_static import static_tls
+import matplotlib.pyplot as plt
+iteration = 0
+x=[]
+y=[]
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -40,7 +43,7 @@ def update_vehicle_on_lane(vechicles_on_lane,edge):
     for vehicle in vehicles_at_opening:
         vechicles_on_lane.add(vehicle)
 
-def set_lane_time(edge, step):
+def set_lane_time(edge, step, total_steps):
 
     global total_no_of_vehicles_crossed, total_waiting_time, total_fuel_consumption, total_CO2_emission
 
@@ -64,18 +67,16 @@ def set_lane_time(edge, step):
         vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle))
 
-    # gst = getGST(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time)
+    gst = getGST(no_of_vehicles, no_of_vehicles_other, maximum_waiting_time)
     print("Edge", edge,end=" ")
     print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
     
-    gst =3
-    if(no_of_vehicles==0):
-        gst=3
-    elif(edge=="E2"):
-        gst=40
-    elif(no_of_vehicles!=0):
-        gst=5
     print("GST", gst, end=" ")
+
+    global x,y,iteration
+    iteration+=1
+    x.append(iteration)
+    y.append(gst)
     
     traci.trafficlight.setPhaseDuration("J2", gst)
 
@@ -93,6 +94,8 @@ def set_lane_time(edge, step):
         #     total_CO2_emission += traci.edge.getCO2Emission(edge2)
         #     total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
         traci.simulationStep()
+        if(step==total_steps):
+            break
 
     # curr_waiting_time = 0
     for vehicle in vehicles_crossed:
@@ -101,20 +104,26 @@ def set_lane_time(edge, step):
                 # curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
 
+    #Error in yellow light timings and therefore error in counting the no of vehicle crossed
+    #need to correct it
 
     traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
-    traci.trafficlight.setPhaseDuration("J2", 4)
-
-    calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
-    total_no_of_vehicles_crossed += len(vehicles_crossed)
-
-    print("No of Vehicles Crossed", len(vehicles_crossed))
-
+    # traci.trafficlight.setPhaseDuration("J2", 4)
     j = 0
-    while j < 1:
+    while j < 3:
         step += 1
         j += 1
-    #     traci.simulationStep()
+        # traci.simulationStep()
+
+    calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
+
+    no_of_vehicle_crossed = len(vehicles_crossed)
+
+    total_no_of_vehicles_crossed += no_of_vehicle_crossed
+
+    print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
+
+    
     return step
 
 
@@ -124,23 +133,26 @@ def dynamic_tls():
     step = 0
     lane = 0
 
-    while step < 1000:
+    total_steps = 1000
+    while step < total_steps:
 
         if lane == 0:
-            step = set_lane_time("E2", step)
+            step = set_lane_time("E2", step, total_steps)
             lane = 1
 
         elif lane == 1:
-            step = set_lane_time("-E1", step)
+            step = set_lane_time("-E1", step, total_steps)
             lane = 2
 
         elif lane == 2:
-            step = set_lane_time("-E3", step)
+            step = set_lane_time("-E3", step, total_steps)
             lane = 3
 
         elif lane == 3:
-            step = set_lane_time("E0", step)
+            step = set_lane_time("E0", step, total_steps)
             lane = 0
+
+        print(step)
 
     traci.close()
 
@@ -151,3 +163,5 @@ def dynamic_tls():
 
 if __name__ == "__main__":
     dynamic_tls()
+    plt.plot(x,y)
+    plt.show()
