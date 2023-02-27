@@ -13,7 +13,7 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("Please declare environment variable 'SUMO_HOME'")
 
-sumo_binary = "sumo-gui"
+sumo_binary = "sumo"
 sumo_cmd = [sumo_binary, "-c", "junction.sumocfg", "--start", "--duration-log.disable", "true", "--no-step-log", "true", "--no-warnings", "true"]
 
 edges = ["E2", "-E1", "-E3", "E0"]
@@ -97,23 +97,29 @@ def set_lane_time(edge, step, total_steps):
         if(step==total_steps):
             break
 
+    if(step==total_steps):
+        return step
+
     # curr_waiting_time = 0
     for vehicle in vehicles_crossed:
         for that_vehicle in vehicle_with_waiting_time:
             if vehicle == that_vehicle[0]:
                 # curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
+    
+    yellow_light_time = 5
+    yellow_light_time = yellow_light_time-1
 
-    #Error in yellow light timings and therefore error in counting the no of vehicle crossed
-    #need to correct it
+    # traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
+    traci.trafficlight.setPhaseDuration("J2", yellow_light_time)
 
-    traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
-    # traci.trafficlight.setPhaseDuration("J2", 4)
     j = 0
-    while j < 3:
+    while j < yellow_light_time+1:
         step += 1
         j += 1
-        # traci.simulationStep()
+        traci.simulationStep()
+        if(step==total_steps):
+            break
 
     calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
 
@@ -123,7 +129,6 @@ def set_lane_time(edge, step, total_steps):
 
     print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
 
-    
     return step
 
 

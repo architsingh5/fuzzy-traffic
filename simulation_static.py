@@ -1,6 +1,10 @@
 import os
 import sys
 import traci
+import matplotlib.pyplot as plt
+iteration = 0
+x=[]
+y=[]
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -65,7 +69,13 @@ def set_lane_time(edge, step, total_steps):
     gst = 30
     print("Edge", edge,end=" ")
     print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
+    
     print("GST", gst, end=" ")
+
+    global x,y,iteration
+    iteration+=1
+    x.append(iteration)
+    y.append(gst)
     
     traci.trafficlight.setPhaseDuration("J2", gst)
 
@@ -86,27 +96,38 @@ def set_lane_time(edge, step, total_steps):
         if(step==total_steps):
             break
 
+    if(step==total_steps):
+        return step
+
     # curr_waiting_time = 0
     for vehicle in vehicles_crossed:
         for that_vehicle in vehicle_with_waiting_time:
             if vehicle == that_vehicle[0]:
                 # curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
-
-
-    traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
-    traci.trafficlight.setPhaseDuration("J2", 4)
-
-    calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
-    total_no_of_vehicles_crossed += len(vehicles_crossed)
     
-    print("No of Vehicles Crossed", len(vehicles_crossed),end=" ")
+    yellow_light_time = 5
+    yellow_light_time = yellow_light_time-1
+
+    # traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
+    traci.trafficlight.setPhaseDuration("J2", yellow_light_time)
 
     j = 0
-    while j < 1:
+    while j < yellow_light_time+1:
         step += 1
         j += 1
-    #     traci.simulationStep()
+        traci.simulationStep()
+        if(step==total_steps):
+            break
+
+    calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
+
+    no_of_vehicle_crossed = len(vehicles_crossed)
+
+    total_no_of_vehicles_crossed += no_of_vehicle_crossed
+
+    print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
+
     return step
 
 
@@ -138,6 +159,7 @@ def static_tls():
         print(step)
 
     traci.close()
+
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
     print("Average waiting time:",round(total_waiting_time / total_no_of_vehicles_crossed, 2),)
     # print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
@@ -145,3 +167,5 @@ def static_tls():
 
 if __name__ == "__main__":
     static_tls()
+    plt.plot(x,y)
+    plt.show()
