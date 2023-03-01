@@ -3,8 +3,9 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
-max_queue_length_curr = 30
-max_green_signal_time = 60
+# Magic Rule: Keep Max_green_signal_time = Static_GST * 2
+max_queue_length_curr = 60
+max_green_signal_time = 80
 max_queue_length_other = max_queue_length_curr * 3
 max_waiting_time = max_green_signal_time * 3
 a = max_queue_length_curr/5
