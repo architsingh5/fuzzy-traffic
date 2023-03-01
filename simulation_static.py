@@ -66,11 +66,11 @@ def set_lane_time(edge, step, total_steps):
         vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle))
 
-    gst = 30
-    print("Edge", edge,end=" ")
-    print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
+    gst = 40
+    # print("Edge", edge,end=" ")
+    # print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
     
-    print("GST", gst, end=" ")
+    # print("GST", gst, end=" ")
 
     global x,y,iteration
     iteration+=1
@@ -96,9 +96,6 @@ def set_lane_time(edge, step, total_steps):
         if(step==total_steps):
             break
 
-    if(step==total_steps):
-        return step
-
     # curr_waiting_time = 0
     for vehicle in vehicles_crossed:
         for that_vehicle in vehicle_with_waiting_time:
@@ -113,7 +110,7 @@ def set_lane_time(edge, step, total_steps):
     traci.trafficlight.setPhaseDuration("J2", yellow_light_time)
 
     j = 0
-    while j < yellow_light_time+1:
+    while j < yellow_light_time+1 and step < total_steps:
         step += 1
         j += 1
         traci.simulationStep()
@@ -126,7 +123,7 @@ def set_lane_time(edge, step, total_steps):
 
     total_no_of_vehicles_crossed += no_of_vehicle_crossed
 
-    print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
+    # print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
 
     return step
 
@@ -156,14 +153,18 @@ def static_tls():
             step = set_lane_time("E0", step, total_steps)
             lane = 0
 
-        print(step)
+        # print(step)
 
     traci.close()
 
+    average_waiting_time = round(total_waiting_time / total_no_of_vehicles_crossed, 2)
+
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
-    print("Average waiting time:",round(total_waiting_time / total_no_of_vehicles_crossed, 2),)
+    print("Average waiting time:", average_waiting_time, "seconds")
     # print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
     # print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
+
+    return total_no_of_vehicles_crossed, average_waiting_time, total_CO2_emission, total_fuel_consumption
 
 if __name__ == "__main__":
     static_tls()
