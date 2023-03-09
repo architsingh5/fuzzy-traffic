@@ -134,7 +134,7 @@ def static_tls():
     step = 0
     lane = 0
 
-    total_steps = 1000
+    total_steps = 3600
     while step < total_steps:
 
         if lane == 0:
