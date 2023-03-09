@@ -4,14 +4,17 @@ from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
 # Magic Rule: Keep Max_green_signal_time = Static_GST * 2
-max_queue_length_curr = 60
-max_green_signal_time = 80
+# Keep max_queue_length_curr = Static_GST
+# Ignore this
+
+max_queue_length_curr = 30 #can be 60
+max_green_signal_time = 60 #can be 80
 max_queue_length_other = max_queue_length_curr * 3
 max_waiting_time = max_green_signal_time * 3
-a = max_queue_length_curr/5
-b = max_queue_length_other/5
-c = max_waiting_time/5
-d = max_green_signal_time/5
+# a = max_queue_length_curr/5
+# b = max_queue_length_other/5
+# c = max_waiting_time/5
+# d = max_green_signal_time/5
 
 queue_length_curr = ctrl.Antecedent(np.arange(0, max_queue_length_curr+1, 1), "queue_length_curr")
 queue_length_other = ctrl.Antecedent(np.arange(0, max_queue_length_other+1, 1), "queue_length_other")
@@ -123,7 +126,7 @@ rule26 = ctrl.Rule(
 )
 rule27 = ctrl.Rule(
     queue_length_curr["high"] & queue_length_other["high"] & max_waiting_time["high"],
-    green_signal_time["med"],
+    green_signal_time["high"],
 )
 
 
