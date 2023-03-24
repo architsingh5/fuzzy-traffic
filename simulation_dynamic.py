@@ -87,12 +87,12 @@ def set_lane_time(edge, step, total_steps):
         current_lane_steps += 1
         update_vehicle_on_lane(vehicles_on_lane,edge)
         calculcate_vehicles_crossed(vehicles_crossed, vehicles_on_lane, edge)
-        # for edge2 in edges:
-        #     total_CO2_emission += traci.edge.getCO2Emission(edge2)
-        #     total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
-        # for edge2 in return_edges:
-        #     total_CO2_emission += traci.edge.getCO2Emission(edge2)
-        #     total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
+        for edge2 in edges:
+            # total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
+        for edge2 in return_edges:
+            # total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
         traci.simulationStep()
         if(step==total_steps):
             break
@@ -114,6 +114,12 @@ def set_lane_time(edge, step, total_steps):
     while j < yellow_light_time+1 and step<total_steps:
         step += 1
         j += 1
+        for edge2 in edges:
+            # total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
+        for edge2 in return_edges:
+            # total_CO2_emission += traci.edge.getCO2Emission(edge2)
+            total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
         traci.simulationStep()
         if(step==total_steps):
             break
@@ -163,7 +169,7 @@ def dynamic_tls():
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
     print("Average waiting time:", average_waiting_time, "seconds")
     # print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
-    # print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
+    print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
 
     return total_no_of_vehicles_crossed, average_waiting_time, total_CO2_emission, total_fuel_consumption
 

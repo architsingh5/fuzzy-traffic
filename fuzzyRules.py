@@ -11,10 +11,10 @@ max_queue_length_curr = 30 #can be 60
 max_green_signal_time = 60 #can be 80
 max_queue_length_other = max_queue_length_curr * 3
 max_waiting_time = max_green_signal_time * 3
-# a = max_queue_length_curr/5
-# b = max_queue_length_other/5
-# c = max_waiting_time/5
-# d = max_green_signal_time/5
+a = max_queue_length_curr/5
+b = max_queue_length_other/5
+c = max_waiting_time/5
+d = max_green_signal_time/5
 
 queue_length_curr = ctrl.Antecedent(np.arange(0, max_queue_length_curr+1, 1), "queue_length_curr")
 queue_length_other = ctrl.Antecedent(np.arange(0, max_queue_length_other+1, 1), "queue_length_other")
@@ -24,31 +24,31 @@ green_signal_time = ctrl.Consequent(np.arange(0, max_green_signal_time+1, 1), "g
 
 level = ["low", "med", "high"]
 
-queue_length_curr.automf(3, names=level)
-queue_length_other.automf(3, names=level)
-max_waiting_time.automf(3, names=level)
+# queue_length_curr.automf(3, names=level)
+# queue_length_other.automf(3, names=level)
+# max_waiting_time.automf(3, names=level)
 
-# queue_length_curr['low'] = fuzz.trapmf(queue_length_curr.universe ,  [0, 0, 0, a*2] )
-# queue_length_curr['med'] = fuzz.trapmf(queue_length_curr.universe ,  [a, a*2, a*3, a*4] )
-# queue_length_curr['high'] = fuzz.trapmf(queue_length_curr.universe ,  [a*3, a*4, a*5, a*5] )
+queue_length_curr['low'] = fuzz.trapmf(queue_length_curr.universe ,  [0, 0, 0, a*2] )
+queue_length_curr['med'] = fuzz.trapmf(queue_length_curr.universe ,  [a, a*2, a*3, a*4] )
+queue_length_curr['high'] = fuzz.trapmf(queue_length_curr.universe ,  [a*3, a*4, a*5, a*5] )
 
-# queue_length_other['low'] = fuzz.trapmf(queue_length_other.universe ,  [0, 0, 0, b*2] )
-# queue_length_other['med'] = fuzz.trapmf(queue_length_other.universe ,  [b, b*2, b*3, b*4] )
-# queue_length_other['high'] = fuzz.trapmf(queue_length_other.universe ,  [b*3, b*4, b*5, b*5] )
+queue_length_other['low'] = fuzz.trapmf(queue_length_other.universe ,  [0, 0, 0, b*2] )
+queue_length_other['med'] = fuzz.trapmf(queue_length_other.universe ,  [b, b*2, b*3, b*4] )
+queue_length_other['high'] = fuzz.trapmf(queue_length_other.universe ,  [b*3, b*4, b*5, b*5] )
 
-# max_waiting_time['low'] = fuzz.trapmf(max_waiting_time.universe ,  [0, 0, 0, c*2] )
-# max_waiting_time['med'] = fuzz.trapmf(max_waiting_time.universe ,  [c, c*2, c*3, c*4] )
-# max_waiting_time['high'] = fuzz.trapmf(max_waiting_time.universe ,  [c*3, c*4, c*5, c*5] )
+max_waiting_time['low'] = fuzz.trapmf(max_waiting_time.universe ,  [0, 0, 0, c*2] )
+max_waiting_time['med'] = fuzz.trapmf(max_waiting_time.universe ,  [c, c*2, c*3, c*4] )
+max_waiting_time['high'] = fuzz.trapmf(max_waiting_time.universe ,  [c*3, c*4, c*5, c*5] )
 
 # queue_length_curr.view()
 # queue_length_other.view()
 # max_waiting_time.view()
 
-green_signal_time.automf(3, names=level)
+# green_signal_time.automf(3, names=level)
 
-# green_signal_time['low'] = fuzz.trapmf(green_signal_time.universe ,  [0, 0, 0, d*2] )
-# green_signal_time['med'] = fuzz.trapmf(green_signal_time.universe ,  [d, d*2, d*3, d*4] )
-# green_signal_time['high'] = fuzz.trapmf(green_signal_time.universe ,  [d*3, d*4, d*5, d*5] )
+green_signal_time['low'] = fuzz.trapmf(green_signal_time.universe ,  [0, 0, 0, d*2] )
+green_signal_time['med'] = fuzz.trapmf(green_signal_time.universe ,  [d, d*2, d*3, d*4] )
+green_signal_time['high'] = fuzz.trapmf(green_signal_time.universe ,  [d*3, d*4, d*5, d*5] )
 
 # green_signal_time.view()
 
