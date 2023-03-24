@@ -66,7 +66,7 @@ def set_lane_time(edge, step, total_steps):
         vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle))
 
-    gst = 30
+    gst = 25
     # print("Edge", edge,end=" ")
     # print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
     
@@ -103,7 +103,7 @@ def set_lane_time(edge, step, total_steps):
                 # curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
     
-    yellow_light_time = 5
+    yellow_light_time = 3
     yellow_light_time = yellow_light_time-1
 
     # traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)

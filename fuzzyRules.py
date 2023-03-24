@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 # Keep max_queue_length_curr = Static_GST
 # Ignore this
 
-max_queue_length_curr = 30 #can be 60
-max_green_signal_time = 60 #can be 80
+max_queue_length_curr = 20#can be 60
+max_green_signal_time = 50 #can be 80
 max_queue_length_other = max_queue_length_curr * 3
 max_waiting_time = max_green_signal_time * 3
-# a = max_queue_length_curr/5
-# b = max_queue_length_other/5
-# c = max_waiting_time/5
-# d = max_green_signal_time/5
+a = max_queue_length_curr/5
+b = max_queue_length_other/5
+c = max_waiting_time/5
+d = max_green_signal_time/5
 
 queue_length_curr = ctrl.Antecedent(np.arange(0, max_queue_length_curr+1, 1), "queue_length_curr")
 queue_length_other = ctrl.Antecedent(np.arange(0, max_queue_length_other+1, 1), "queue_length_other")

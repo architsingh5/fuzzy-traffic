@@ -104,7 +104,7 @@ def set_lane_time(edge, step, total_steps):
                 # curr_waiting_time += that_vehicle[1]
                 total_waiting_time = total_waiting_time + that_vehicle[1]
     
-    yellow_light_time = 5
+    yellow_light_time = 3
     yellow_light_time = yellow_light_time-1
 
     # traci.trafficlight.setPhase("J2", (traci.trafficlight.getPhase("J2") + 1) % 8)
