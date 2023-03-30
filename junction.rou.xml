@@ -46,18 +46,18 @@
     <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.01" /> -->
 
     <!-- TWO LANE HEAVY -->
-    <!-- <flow id="flow1" type="car" route="route01" begin="0" end="10000" probability="0.08" />
+    <flow id="flow1" type="car" route="route01" begin="0" end="10000" probability="0.08" />
     <flow id="flow2" type="car" route="route02" begin="0" end="10000" probability="0.08" />
     <flow id="flow3" type="car" route="route03" begin="0" end="10000" probability="0.08" />
-    <flow id="flow4" type="car" route="route04" begin="0" end="10000" probability="0.01" />
-    <flow id="flow5" type="car" route="route05" begin="0" end="10000" probability="0.01" />
-    <flow id="flow6" type="car" route="route06" begin="0" end="10000" probability="0.01" />
-    <flow id="flow7" type="car" route="route07" begin="0" end="10000" probability="0.08" />
-    <flow id="flow8" type="car" route="route08" begin="0" end="10000" probability="0.08" />
-    <flow id="flow9" type="car" route="route09" begin="0" end="10000" probability="0.08" />
+    <flow id="flow4" type="car" route="route04" begin="0" end="10000" probability="0.08" />
+    <flow id="flow5" type="car" route="route05" begin="0" end="10000" probability="0.08" />
+    <flow id="flow6" type="car" route="route06" begin="0" end="10000" probability="0.08" />
+    <flow id="flow7" type="car" route="route07" begin="0" end="10000" probability="0.01" />
+    <flow id="flow8" type="car" route="route08" begin="0" end="10000" probability="0.01" />
+    <flow id="flow9" type="car" route="route09" begin="0" end="10000" probability="0.01" />
     <flow id="flow10" type="car" route="route10" begin="0" end="10000" probability="0.01" />
     <flow id="flow11" type="car" route="route11" begin="0" end="10000" probability="0.01" />
-    <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.01" /> -->
+    <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.01" />
 
     <!-- THREE LANE HEAVY -->
     <!-- <flow id="flow1" type="car" route="route01" begin="0" end="10000" probability="0.08" />
@@ -74,7 +74,7 @@
     <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.01" /> -->
 
     <!-- ALL LANE HEAVY -->
-    <flow id="flow1" type="car" route="route01" begin="0" end="10000" probability="0.08" />
+    <!-- <flow id="flow1" type="car" route="route01" begin="0" end="10000" probability="0.08" />
     <flow id="flow2" type="car" route="route02" begin="0" end="10000" probability="0.08" />
     <flow id="flow3" type="car" route="route03" begin="0" end="10000" probability="0.08" />
     <flow id="flow4" type="car" route="route04" begin="0" end="10000" probability="0.08" />
@@ -85,7 +85,7 @@
     <flow id="flow9" type="car" route="route09" begin="0" end="10000" probability="0.08" />
     <flow id="flow10" type="car" route="route10" begin="0" end="10000" probability="0.08" />
     <flow id="flow11" type="car" route="route11" begin="0" end="10000" probability="0.08" />
-    <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.08" />
+    <flow id="flow12" type="car" route="route12" begin="0" end="10000" probability="0.08" /> -->
 
 </routes>
 
