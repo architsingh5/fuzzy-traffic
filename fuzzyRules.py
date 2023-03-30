@@ -126,7 +126,7 @@ rule26 = ctrl.Rule(
 )
 rule27 = ctrl.Rule(
     queue_length_curr["high"] & queue_length_other["high"] & max_waiting_time["high"],
-    green_signal_time["high"],
+    green_signal_time["med"],
 )
 
 
