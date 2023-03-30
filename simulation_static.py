@@ -66,22 +66,24 @@ def set_lane_time(edge, step, total_steps):
         vehicle_with_waiting_time.append((vehicle, traci.vehicle.getWaitingTime(vehicle)))
         maximum_waiting_time = max(maximum_waiting_time, traci.vehicle.getWaitingTime(vehicle))
 
+    traci.simulationStep()
+
     gst = 30
     # print("Edge", edge,end=" ")
     # print("No of Vehicles", no_of_vehicles,"No of Vehicles Other", no_of_vehicles_other,"Maximum Waiting Time", maximum_waiting_time,end=" ")
     
-    # print("GST", gst, end=" ")
+    # print("GST", gst)
 
     global x,y,iteration
     iteration+=1
     x.append(iteration)
     y.append(gst)
     
-    traci.trafficlight.setPhaseDuration("J2", gst)
+    traci.trafficlight.setPhaseDuration("J2", gst-1)
 
     current_lane_steps = 0
     vehicles_crossed = set()
-    while current_lane_steps < gst+1:
+    while current_lane_steps < gst:
         step += 1
         current_lane_steps += 1
         update_vehicle_on_lane(vehicles_on_lane,edge)
@@ -110,7 +112,7 @@ def set_lane_time(edge, step, total_steps):
     traci.trafficlight.setPhaseDuration("J2", yellow_light_time)
 
     j = 0
-    while j < yellow_light_time+1 and step < total_steps:
+    while j < yellow_light_time+1 and step<total_steps:
         step += 1
         j += 1
         for edge2 in edges:
@@ -119,7 +121,8 @@ def set_lane_time(edge, step, total_steps):
         for edge2 in return_edges:
             # total_CO2_emission += traci.edge.getCO2Emission(edge2)
             total_fuel_consumption += traci.edge.getFuelConsumption(edge2)
-        traci.simulationStep()
+        if(j!=yellow_light_time):
+            traci.simulationStep()
         if(step==total_steps):
             break
 
@@ -129,7 +132,7 @@ def set_lane_time(edge, step, total_steps):
 
     total_no_of_vehicles_crossed += no_of_vehicle_crossed
 
-    # print("No of Vehicles Crossed", no_of_vehicle_crossed,end=" ")
+    # print("No of Vehicles Crossed", no_of_vehicle_crossed)
 
     return step
 
