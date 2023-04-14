@@ -172,9 +172,9 @@ def dynamic_tls():
     print("Total vehicles crossed:", total_no_of_vehicles_crossed)
     print("Average waiting time:", average_waiting_time, "seconds")
     # print("total CO2 emission : ", round(total_CO2_emission / 1000, 2), " grams ")
-    print("total fuel consumption : ", round(total_fuel_consumption / 1000, 2), " liters")
+    print("Fuel Consumed per vehicle : ", round((total_fuel_consumption / 1000)/total_no_of_vehicles_crossed, 2), " liters")
 
-    return total_no_of_vehicles_crossed, average_waiting_time, total_CO2_emission, total_fuel_consumption
+    return total_no_of_vehicles_crossed, average_waiting_time, total_CO2_emission, total_fuel_consumption/total_no_of_vehicles_crossed
 
 if __name__ == "__main__":
     dynamic_tls()
