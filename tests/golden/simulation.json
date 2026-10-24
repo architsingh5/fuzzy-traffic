@@ -1,0 +1,17 @@
+{
+ "sumo_version": "1.28.0",
+ "metrics": {
+  "static": {
+   "Total vehicles crossed": "348",
+   "Average waiting time": "136.08",
+   "total CO2 emission": "141835.14",
+   "total fuel consumption": "45981.84"
+  },
+  "dynamic": {
+   "Total vehicles crossed": "355",
+   "Average waiting time": "135.72",
+   "total CO2 emission": "141959.17",
+   "total fuel consumption": "46022.06"
+  }
+ }
+}
