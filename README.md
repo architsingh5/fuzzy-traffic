@@ -35,6 +35,17 @@ Each run simulates the first 1000 s of the traffic in `junction.rou.xml` and pri
 
 To plot the membership functions or a controller output, install matplotlib (`pipenv run pip install matplotlib`) and call `.view()` on the variables in `fuzzyRules.py`.
 
+## Tests
+
+The tests compare the fuzzy controller's green times and the simulation results with golden values in `tests/golden/`, so any change in behaviour makes them fail. They run on every pull request.
+
+```sh
+pipenv run pip install pytest
+pipenv run pytest
+```
+
+The simulation test is skipped when SUMO isn't installed, and the golden values were recorded with SUMO 1.28.0. When a change in behaviour is intended (for example new fuzzy rules or a SUMO upgrade), re-record the values with `pipenv run python tests/generate_golden.py` and commit them with that change.
+
 ## License
 
 [MIT](LICENSE)
