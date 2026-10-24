@@ -120,7 +120,7 @@
         <phase duration="3"  state="grrrgrrrgyygrrr"/>
         <phase duration="30" state="grrrgrrrgrrgGGG"/>
         <phase duration="3"  state="grrrgrrrgrrgyyy"/> -->
-        0<phase duration="30" state="GGGGgrrrrrrrrrr"/>
+        <phase duration="30" state="GGGGrrrrrrrrrrr"/>
         <phase duration="3"  state="yyyyrrrrrrrrrrr"/>
         <phase duration="30" state="rrrrGGGGrrrrrrr"/>
         <phase duration="3"  state="rrrryyyyrrrrrrr"/>
