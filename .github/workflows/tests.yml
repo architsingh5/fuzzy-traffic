@@ -1,0 +1,34 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Read Python version from Pipfile
+        id: python
+        run: echo "version=$(sed -n 's/^python_version = "\(.*\)"/\1/p' Pipfile)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ steps.python.outputs.version }}
+
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install --deploy --python "$(which python)"
+          # test-only tools, kept out of the lockfile: pytest, and the SUMO release matching the locked traci
+          traci_version=$(python -c 'import json; print(json.load(open("Pipfile.lock"))["default"]["traci"]["version"].lstrip("="))')
+          pipenv run pip install pytest "eclipse-sumo==$traci_version"
+
+      - name: Run tests
+        run: pipenv run pytest -v
