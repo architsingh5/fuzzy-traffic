@@ -77,7 +77,7 @@ rule13 = ctrl.Rule(
 )
 rule14 = ctrl.Rule(
     queue_length_curr["med"] & queue_length_other["med"] & max_waiting_time["med"],
-    green_signal_time["low"],
+    green_signal_time["med"],
 )
 rule15 = ctrl.Rule(
     queue_length_curr["med"] & queue_length_other["med"] & max_waiting_time["high"],
@@ -121,15 +121,15 @@ rule24 = ctrl.Rule(
 )
 rule25 = ctrl.Rule(
     queue_length_curr["high"] & queue_length_other["high"] & max_waiting_time["low"],
-    green_signal_time["med"],
+    green_signal_time["high"],
 )
 rule26 = ctrl.Rule(
     queue_length_curr["high"] & queue_length_other["high"] & max_waiting_time["med"],
-    green_signal_time["med"],
+    green_signal_time["high"],
 )
 rule27 = ctrl.Rule(
     queue_length_curr["high"] & queue_length_other["high"] & max_waiting_time["high"],
-    green_signal_time["med"],
+    green_signal_time["high"],
 )
 
 
