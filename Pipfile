@@ -5,15 +5,15 @@ name = "pypi"
 
 [packages]
 traci = "*"
+sumolib = "*"
 scikit-fuzzy = "*"
+# imported by scikit-fuzzy but not declared as its dependencies
 scipy = "*"
 networkx = "*"
+packaging = "*"
 numpy = "*"
-matplotlib = "*"
-pillow = ">=13.0.0"
-fonttools = ">=4.60.2"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.15"
