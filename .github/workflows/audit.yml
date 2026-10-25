@@ -1,0 +1,38 @@
+name: audit
+
+# Checks the locked dependencies for known vulnerabilities. Dependabot does not support
+# Python 3.15 yet, so it cannot scan this repository; this workflow covers that gap.
+# The daily run catches advisories published for versions that are already locked.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pip-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Read Python version from Pipfile
+        id: python
+        run: echo "version=$(sed -n 's/^python_version = "\(.*\)"/\1/p' Pipfile)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ steps.python.outputs.version }}
+
+      - name: Install pipenv and pip-audit
+        run: pip install pipenv pip-audit
+
+      - name: Audit Pipfile.lock
+        run: |
+          pipenv requirements --hash > "$RUNNER_TEMP/requirements.txt"
+          pip-audit --strict --disable-pip --require-hashes --desc -r "$RUNNER_TEMP/requirements.txt"

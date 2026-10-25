@@ -46,6 +46,16 @@ pipenv run pytest
 
 The simulation test is skipped when SUMO isn't installed, and the golden values were recorded with SUMO 1.28.0. When a change in behaviour is intended (for example new fuzzy rules or a SUMO upgrade), re-record the values with `pipenv run python tests/generate_golden.py` and commit them with that change.
 
+## Security checks
+
+Dependabot doesn't support Python 3.15 yet, so it can't scan this repository. Instead, the `audit` workflow runs [pip-audit](https://github.com/pypa/pip-audit) on `Pipfile.lock` for every pull request, every push to `main` and once a day, and fails if a locked package has a known vulnerability. To run the same check locally:
+
+```sh
+pipenv run pip install pip-audit
+pipenv requirements --hash > requirements.txt
+pipenv run pip-audit --strict --disable-pip --require-hashes -r requirements.txt
+```
+
 ## License
 
 [MIT](LICENSE)
