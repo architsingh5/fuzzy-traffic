@@ -19,11 +19,11 @@ RULE_TABLE = {
     ("low", "med"): ("low", "low", "low"),
     ("low", "high"): ("low", "low", "low"),
     ("med", "low"): ("med", "med", "med"),
-    ("med", "med"): ("med", "low", "med"),
+    ("med", "med"): ("med", "med", "med"),
     ("med", "high"): ("low", "low", "med"),
     ("high", "low"): ("high", "high", "high"),
     ("high", "med"): ("high", "high", "high"),
-    ("high", "high"): ("med", "med", "med"),
+    ("high", "high"): ("high", "high", "high"),
 }
 
 rules = [
